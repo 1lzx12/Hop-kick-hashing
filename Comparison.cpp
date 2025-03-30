@@ -8,9 +8,8 @@
 #include <functional>
 #include"Cuckoo.h"
 #include"Hopscotch.h"
-#include"¿ª·ÅµØÖ·.h"
-#include"Á´µØÖ·.h"
-#include"ĞÂ¹şÏ£.h"
+#include"Linear_probing.h"
+#include"Hop_kick_hashing.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -18,8 +17,8 @@
 #include <vector>
 using namespace std;
 
-//¸÷ÖÖ¹şÏ£Ëã·¨µÄ²åÈë²Ù×÷ËùÓÃÊ±¼ä/Ìß²Ù×÷´ÎÊı
-//Á´Ê½¹şÏ£
+//å„ç§å“ˆå¸Œç®—æ³•çš„æ’å…¥æ“ä½œæ‰€ç”¨æ—¶é—´/è¸¢æ“ä½œæ¬¡æ•°
+//é“¾å¼å“ˆå¸Œ
 double Insert_chainHash(int num, int keys[]) {
     auto start = std::chrono::steady_clock::now();
     HashMap<int, int> hashMap(10000);
@@ -33,7 +32,7 @@ double Insert_chainHash(int num, int keys[]) {
     std::chrono::duration<double> chainHashDuration = end - start;
     return chainHashDuration.count();
 }
-//¿ª·ÅµØÖ·¹şÏ£
+//å¼€æ”¾åœ°å€å“ˆå¸Œ
 double Insert_openAddressHash(int num, int keys[]) {
     auto start = std::chrono::steady_clock::now();
     OpenAddressingHashTable<int, std::string> hashTable(10000);
@@ -46,7 +45,7 @@ double Insert_openAddressHash(int num, int keys[]) {
     std::chrono::duration<double> openAddressHashDuration = end - start;
     return openAddressHashDuration.count();
 }
-//cuckoo¹şÏ£
+//cuckooå“ˆå¸Œ
 double Insert_cuckoo(int num, int keys[]) {
     auto start = std::chrono::steady_clock::now();
     CuckooHashing ch(5000, 2, [](const int& value) { return value % 5000; }, [](const int& value) { return (value * 3 + 7) % 5000; });
@@ -58,7 +57,7 @@ double Insert_cuckoo(int num, int keys[]) {
     //return cuckooHashDuration.count();
     return ch.getkick_count();
 }
-//ĞÂ¹şÏ£
+//æ–°å“ˆå¸Œ
 int Insert_hop(int num, int keys[]) {
     auto start = std::chrono::steady_clock::now();
     LR hk(0, 1667, 6, 0, 6);
@@ -69,7 +68,7 @@ int Insert_hop(int num, int keys[]) {
     std::chrono::duration<double> hop_kickHashDuration = end - start;
     return hop_kickHashDuration.count();
 }
-//¸÷ÖÖ¹şÏ£Ëã·¨µÄ
+//å„ç§å“ˆå¸Œç®—æ³•çš„
 int cuckoo_kick(int num, int keys[]) {
     CuckooHashing ch(5000, 2, [](const int& value) { return value % 5000; }, [](const int& value) { return (value * 3 + 7) % 5000; });
     for (int i = 0; i < num; i++) {
@@ -113,13 +112,13 @@ double hop_memory(int num, int keys[]) {
     return hk.getMemory_utilizationrate()/num;
 }
 int time33Hash(int num) {
-    // ½«ÕûÊı×ª»»Îª×Ö·û´®
+    // å°†æ•´æ•°è½¬æ¢ä¸ºå­—ç¬¦ä¸²
     std::string numStr = std::to_string(num);
 
-    // ³õÊ¼»¯¹şÏ£ÖµÎª0
+    // åˆå§‹åŒ–å“ˆå¸Œå€¼ä¸º0
     int hashValue = 0;
 
-    // ¶ÔÃ¿¸ö×Ö·ûÓ¦ÓÃTime33Ëã·¨²¢ÀÛ¼Ó½á¹û
+    // å¯¹æ¯ä¸ªå­—ç¬¦åº”ç”¨Time33ç®—æ³•å¹¶ç´¯åŠ ç»“æœ
     for (char c : numStr) {
         int charCode = static_cast<int>(c);
         hashValue += charCode * 3;
@@ -129,38 +128,38 @@ int time33Hash(int num) {
 }
 int main() {
     
-    // ¿ÉÒÔÊ¹ÓÃÉú³ÉµÄ½á¹ûÀ´Éú³ÉÍ¼±í£¨ÕâÀï½ö×÷Ê¾Àı£©
+    // å¯ä»¥ä½¿ç”¨ç”Ÿæˆçš„ç»“æœæ¥ç”Ÿæˆå›¾è¡¨ï¼ˆè¿™é‡Œä»…ä½œç¤ºä¾‹ï¼‰
     double openAddress[10];
     double Chain[10];
     double Cuckoo[10];
     double Hop_kick[10];
     int cuckoo_kc[10];
     int hop_kc[10];
-    std::vector<int> x = { 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 }; // xÖáÊı¾İ
-    std::vector<double> y1(10); //  ¿ª·ÅµØÖ·¹şÏ£³åÍ»´ÎÊı
-    std::vector<int> y2(10); //  ¿ª·ÅµØÖ·²åÈëÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<int> y3(10); //  ¿ª·ÅµØÖ·²éÕÒÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<double> y4(10); //  cuckoo¹şÏ£³åÍ»´ÎÊı
-    std::vector<int> y5(10); //  cuckoo²åÈëÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<int> y6(10); //  cuckoo²éÕÒÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<double> y7(10); //  hop_kick¹şÏ£³åÍ»´ÎÊı
-    std::vector<int> y8(10); //  hop_kick²åÈëÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<int> y9(10); //  hop_kick²éÕÒÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<double> y10(10); //  Ìø·¿×Ó¹şÏ£³åÍ»´ÎÊı
-    std::vector<int> y11(10); //  Ìø·¿×Ó²åÈëÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<int> y12(10); //  Ìø·¿×Ó²éÕÒÄÚ´æ·ÃÎÊ´ÎÊı
-    std::vector<int> y13(10); //  Ìø·¿×Ó²åÈëhash´ÎÊı
-    std::vector<int> y14(10); //  cuckoo²åÈëhash´ÎÊı
-    std::vector<double> y15(10); //  ¿ª·ÅµØÖ·ÄÚ´æÀûÓÃÂÊ
-    std::vector<double> y16(10); //  cuckooÄÚ´æÀûÓÃÂÊ
-    std::vector<double> y17(10); //  hopkickÄÚ´æÀûÓÃÂÊ
-    std::vector<double> y18(10); //  hopscotchÄÚ´æÀûÓÃÂÊ
+    std::vector<int> x = { 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 }; // xè½´æ•°æ®
+    std::vector<double> y1(10); //  å¼€æ”¾åœ°å€å“ˆå¸Œå†²çªæ¬¡æ•°
+    std::vector<int> y2(10); //  å¼€æ”¾åœ°å€æ’å…¥å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<int> y3(10); //  å¼€æ”¾åœ°å€æŸ¥æ‰¾å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<double> y4(10); //  cuckooå“ˆå¸Œå†²çªæ¬¡æ•°
+    std::vector<int> y5(10); //  cuckooæ’å…¥å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<int> y6(10); //  cuckooæŸ¥æ‰¾å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<double> y7(10); //  hop_kickå“ˆå¸Œå†²çªæ¬¡æ•°
+    std::vector<int> y8(10); //  hop_kickæ’å…¥å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<int> y9(10); //  hop_kickæŸ¥æ‰¾å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<double> y10(10); //  è·³æˆ¿å­å“ˆå¸Œå†²çªæ¬¡æ•°
+    std::vector<int> y11(10); //  è·³æˆ¿å­æ’å…¥å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<int> y12(10); //  è·³æˆ¿å­æŸ¥æ‰¾å†…å­˜è®¿é—®æ¬¡æ•°
+    std::vector<int> y13(10); //  è·³æˆ¿å­æ’å…¥hashæ¬¡æ•°
+    std::vector<int> y14(10); //  cuckooæ’å…¥hashæ¬¡æ•°
+    std::vector<double> y15(10); //  å¼€æ”¾åœ°å€å†…å­˜åˆ©ç”¨ç‡
+    std::vector<double> y16(10); //  cuckooå†…å­˜åˆ©ç”¨ç‡
+    std::vector<double> y17(10); //  hopkickå†…å­˜åˆ©ç”¨ç‡
+    std::vector<double> y18(10); //  hopscotchå†…å­˜åˆ©ç”¨ç‡
     for (int i = 0; i < 10; i++) {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis(1, 1000000);
 
-        // Éú³ÉËæ»ú¼ü¼¯ºÏ
+        // ç”Ÿæˆéšæœºé”®é›†åˆ
         std::vector<int> keys1;
         for (int j = 0; j < x[i]; ++j) {
             keys1.push_back(dis(gen));
@@ -203,7 +202,7 @@ int main() {
         for (int k = 0; k < find_size; k++) {
             hashMap.search(usfind_keys[k],value);
         }
-        // ²âÊÔ¿ª·ÅµØÖ·¹şÏ£µÄĞÔÄÜ
+        // æµ‹è¯•å¼€æ”¾åœ°å€å“ˆå¸Œçš„æ€§èƒ½
         OpenAddressingHashTable<int, std::string> hashTable(10000);
         //std::unordered_set<int> openAddressHash;
         for (int k = 0; k < insert_size; k++) {
@@ -214,7 +213,7 @@ int main() {
        
             hashTable.search(usfind_keys[k], value2);
         }
-        // ²âÊÔ Cuckoo ¹şÏ£µÄĞÔÄÜ
+        // æµ‹è¯• Cuckoo å“ˆå¸Œçš„æ€§èƒ½
         CuckooHashing ch(5000, 6, [](const int& value) { return value % 5000; }, [](const int& value) { return (value * 3 + 7) % 5000; });
         for (int k = 0; k < insert_size; k++) {
             ch.insert(keys[k]);
@@ -223,7 +222,7 @@ int main() {
             
             ch.find(usfind_keys[k]);
         }
-        // ²âÊÔ hopscotch ¹şÏ£µÄĞÔÄÜ
+        // æµ‹è¯• hopscotch å“ˆå¸Œçš„æ€§èƒ½
         hopscotchHashTable<int, int> Hop(10000, 4);
         for (int k = 0; k < insert_size; k++) {
             Hop.insert(keys[k],1);
@@ -232,7 +231,7 @@ int main() {
 
             Hop.search(usfind_keys[k],value);
         }
-        // ²âÊÔĞÂ¹şÏ£µÄĞÔÄÜ
+        // æµ‹è¯•æ–°å“ˆå¸Œçš„æ€§èƒ½
         LR hk(0, 5000, 2, 0, 6);
         for (int k = 0; k < insert_size; k++) {
             hk.insert(keys[k]);
@@ -261,8 +260,8 @@ int main() {
         y18[i] = Hop.getMemory_utilizationrate();
 
     }
-    cout << "²»Í¬ÊıÁ¿Êı¾İ¼¯ÏÂcuckooºÍhop_kickµÄ¹şÏ£³åÍ»ÂÊÓëÌß²Ù×÷´ÎÊı±È½Ï" << endl;
-    cout << "ÏîÄ¿ÊıÁ¿: 1000  2000  3000  4000  5000  6000  7000  8000  9000  10000 " << endl;
+    cout << "ä¸åŒæ•°é‡æ•°æ®é›†ä¸‹cuckooå’Œhop_kickçš„å“ˆå¸Œå†²çªç‡ä¸è¸¢æ“ä½œæ¬¡æ•°æ¯”è¾ƒ" << endl;
+    cout << "é¡¹ç›®æ•°é‡: 1000  2000  3000  4000  5000  6000  7000  8000  9000  10000 " << endl;
     cout << "cuckoo_kick:";
     for (int j = 0; j < 10; j++) {
         cout << y1[j] << " ";
@@ -292,15 +291,15 @@ int main() {
     for (int j = 0; j < 10; j++) {
         cout << y8[j] << " ";
     }
-    std::ofstream outputFile("c_k4.csv"); // ´´½¨Ò»¸öÃûÎª"data.csv"µÄÎÄ¼ş
+    std::ofstream outputFile("c_k4.csv"); // åˆ›å»ºä¸€ä¸ªåä¸º"data.csv"çš„æ–‡ä»¶
 
-    //½«Êı¾İĞ´ÈëCSVÎÄ¼ş
+    //å°†æ•°æ®å†™å…¥CSVæ–‡ä»¶
     for (size_t i = 0; i < x.size(); ++i) {
         outputFile << x[i] << "," << y1[i] << "," << y2[i] << "," << y3[i] << "," << y4[i] << "," << y5[i] << "," << y6[i] << "," << y7[i] << "," << y8[i] << "," << y9[i] << "," << y10[i] << ","
             << y11[i] << "," << y12[i] << "," << y13[i] << "," << y14[i] << ",";
     }
 
-    outputFile.close(); // ¹Ø±ÕÎÄ¼ş
+    outputFile.close(); // å…³é—­æ–‡ä»¶
 
     return 0;
 }

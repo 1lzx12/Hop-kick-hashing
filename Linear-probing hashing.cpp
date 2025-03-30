@@ -17,7 +17,7 @@ private:
     int size;
 
     int hash(const KeyType& key) const {
-        // Ê¹ÓÃ¼òµ¥µÄÈ¡Ä£ÔËËã×÷Îª¹şÏ£º¯Êı
+        // ä½¿ç”¨ç®€å•çš„å–æ¨¡è¿ç®—ä½œä¸ºå“ˆå¸Œå‡½æ•°
         return static_cast<int>(key) % capacity;
     }
 
@@ -26,7 +26,7 @@ private:
     }
 
     void rehash() {
-        // À©´óÈİÁ¿Îªµ±Ç°µÄÁ½±¶
+        // æ‰©å¤§å®¹é‡ä¸ºå½“å‰çš„ä¸¤å€
         capacity *= 2;
         size = 0;
         std::vector<Node> newData(capacity);
@@ -129,28 +129,28 @@ private:
     struct Node {
         KeyType key;
         ValueType value;
-        bool isOccupied;  // ±ê¼Ç¸ÃÎ»ÖÃÊÇ·ñ±»Õ¼ÓÃ
+        bool isOccupied;  // æ ‡è®°è¯¥ä½ç½®æ˜¯å¦è¢«å ç”¨
 
         Node() : isOccupied(false) {}
     };
 
-    std::vector<Node> data;  // ´æ´¢¹şÏ£±íµÄÊı×é
-    int capacity;  // ¹şÏ£±íµÄÈİÁ¿
-    int size;  // ¹şÏ£±íµ±Ç°´æ´¢µÄÔªËØÊıÁ¿
+    std::vector<Node> data;  // å­˜å‚¨å“ˆå¸Œè¡¨çš„æ•°ç»„
+    int capacity;  // å“ˆå¸Œè¡¨çš„å®¹é‡
+    int size;  // å“ˆå¸Œè¡¨å½“å‰å­˜å‚¨çš„å…ƒç´ æ•°é‡
 
-    // ¹şÏ£º¯Êı£¬Ê¹ÓÃ¼òµ¥µÄÈ¡Ä£ÔËËã
+    // å“ˆå¸Œå‡½æ•°ï¼Œä½¿ç”¨ç®€å•çš„å–æ¨¡è¿ç®—
     int hash(const KeyType& key) const {
         return static_cast<int>(key) % capacity;
     }
 
-    // ¼ì²é¹şÏ£±íÊÇ·ñÒÑÂú
+    // æ£€æŸ¥å“ˆå¸Œè¡¨æ˜¯å¦å·²æ»¡
     bool isFull() const {
         return size >= capacity;
     }
 
-    // ÖØĞÂ¹şÏ££¬À©´óÈİÁ¿²¢ÖØĞÂ·ÖÅäËùÓĞÔªËØ
+    // é‡æ–°å“ˆå¸Œï¼Œæ‰©å¤§å®¹é‡å¹¶é‡æ–°åˆ†é…æ‰€æœ‰å…ƒç´ 
     void rehash() {
-        capacity *= 2;  // À©´óÈİÁ¿Îªµ±Ç°µÄÁ½±¶
+        capacity *= 2;  // æ‰©å¤§å®¹é‡ä¸ºå½“å‰çš„ä¸¤å€
         size = 0;
         std::vector<Node> newData(capacity);
 
@@ -163,11 +163,11 @@ private:
         data = std::move(newData);
     }
 
-    // ÔÚÖ¸¶¨µÄ¹şÏ£±íÖĞ²åÈëÒ»¸ö½Úµã
+    // åœ¨æŒ‡å®šçš„å“ˆå¸Œè¡¨ä¸­æ’å…¥ä¸€ä¸ªèŠ‚ç‚¹
     void insertNode(std::vector<Node>& table, const KeyType& key, const ValueType& value) {
         int index = hash(key);
 
-        // Èç¹û¸ÃÎ»ÖÃÒÑ±»Õ¼ÓÃ£¬ÔòÏßĞÔÌ½²âµ½ÏÂÒ»¸öÎ»ÖÃ
+        // å¦‚æœè¯¥ä½ç½®å·²è¢«å ç”¨ï¼Œåˆ™çº¿æ€§æ¢æµ‹åˆ°ä¸‹ä¸€ä¸ªä½ç½®
         while (table[index].isOccupied) {
             index = (index + 1) % capacity;
         }
@@ -175,30 +175,30 @@ private:
         table[index].key = key;
         table[index].value = value;
         table[index].isOccupied = true;
-        size++;  // ×¢Òâ£ºÕâ¸öÔö¼ÓsizeµÄ²Ù×÷Ó¦¸Ã·ÅÔÚ¹«¹²µÄinsert·½·¨ÖĞ£¬²»Ó¦¸ÃÔÚÕâÀï
+        size++;  // æ³¨æ„ï¼šè¿™ä¸ªå¢åŠ sizeçš„æ“ä½œåº”è¯¥æ”¾åœ¨å…¬å…±çš„insertæ–¹æ³•ä¸­ï¼Œä¸åº”è¯¥åœ¨è¿™é‡Œ
     }
 
 public:
-    // ¹¹Ôìº¯Êı£¬³õÊ¼»¯¹şÏ£±íµÄÈİÁ¿ºÍ´óĞ¡
+    // æ„é€ å‡½æ•°ï¼Œåˆå§‹åŒ–å“ˆå¸Œè¡¨çš„å®¹é‡å’Œå¤§å°
     OpenAddressingHashTable(int initialCapacity = 10) : capacity(initialCapacity), size(0) {
         data.resize(capacity);
     }
 
-    // ²åÈëÒ»¸ö¼üÖµ¶Ô
+    // æ’å…¥ä¸€ä¸ªé”®å€¼å¯¹
     void insert(const KeyType& key, const ValueType& value) {
         if (isFull()) {
-            rehash();  // Èç¹û±íÒÑÂú£¬ÏÈ½øĞĞÀ©Èİ
+            rehash();  // å¦‚æœè¡¨å·²æ»¡ï¼Œå…ˆè¿›è¡Œæ‰©å®¹
         }
 
         insertNode(data, key, value);
-        // size++; // Ó¦¸Ã½«sizeµÄÔö¼ÓÒÆ¶¯µ½insertNodeÄÚ²¿£¬»òÕßÔÚÕâÀïÕıÈ·´¦Àí¡£ÕıÈ·µÄ´¦ÀíÊÇ±£ÁôÕâÀïµÄÔö¼Ó¡£
+        // size++; // åº”è¯¥å°†sizeçš„å¢åŠ ç§»åŠ¨åˆ°insertNodeå†…éƒ¨ï¼Œæˆ–è€…åœ¨è¿™é‡Œæ­£ç¡®å¤„ç†ã€‚æ­£ç¡®çš„å¤„ç†æ˜¯ä¿ç•™è¿™é‡Œçš„å¢åŠ ã€‚
     }
 
-    // ÒÆ³ıÒ»¸öÔªËØ
+    // ç§»é™¤ä¸€ä¸ªå…ƒç´ 
     void remove(const KeyType& key) {
         int index = hash(key);
 
-        // ÏßĞÔÌ½²âÑ°ÕÒÒªÉ¾³ıµÄ¼ü
+        // çº¿æ€§æ¢æµ‹å¯»æ‰¾è¦åˆ é™¤çš„é”®
         while (data[index].isOccupied) {
             if (data[index].key == key) {
                 data[index].isOccupied = false;
@@ -209,7 +209,7 @@ public:
         }
     }
 
-    // ²éÕÒÒ»¸ö¼ü£¬²¢·µ»ØÊÇ·ñÕÒµ½ÒÔ¼°ÆäÖµ
+    // æŸ¥æ‰¾ä¸€ä¸ªé”®ï¼Œå¹¶è¿”å›æ˜¯å¦æ‰¾åˆ°ä»¥åŠå…¶å€¼
     bool search(const KeyType& key, ValueType& value) const {
         int index = hash(key);
 
@@ -226,15 +226,15 @@ public:
 };
 
 int main() {
-    OpenAddressingHashTable<int, std::string> hashTable(5);  // ³õÊ¼»¯Ò»¸öÈİÁ¿Îª5µÄ¹şÏ£±í
+    OpenAddressingHashTable<int, std::string> hashTable(5);  // åˆå§‹åŒ–ä¸€ä¸ªå®¹é‡ä¸º5çš„å“ˆå¸Œè¡¨
 
-    // ²åÈë¼üÖµ¶Ô
+    // æ’å…¥é”®å€¼å¯¹
     hashTable.insert(1, "One");
     hashTable.insert(2, "Two");
     hashTable.insert(3, "Three");
 
     std::string value;
-    // ËÑË÷¼ü2£¬²¢´òÓ¡Æä¶ÔÓ¦µÄÖµ
+    // æœç´¢é”®2ï¼Œå¹¶æ‰“å°å…¶å¯¹åº”çš„å€¼
     if (hashTable.search(2, value)) {
         std::cout << "Value for key 2: " << value << std::endl;
     }
@@ -242,10 +242,10 @@ int main() {
         std::cout << "Key 2 not found." << std::endl;
     }
 
-    // ÒÆ³ı¼ü2
+    // ç§»é™¤é”®2
     hashTable.remove(2);
 
-    // ÔÙ´ÎËÑË÷¼ü2£¬È·ÈÏÆäÒÑ±»ÒÆ³ı
+    // å†æ¬¡æœç´¢é”®2ï¼Œç¡®è®¤å…¶å·²è¢«ç§»é™¤
     if (hashTable.search(2, value)) {
         std::cout << "Value for key 2: " << value << std::endl;
     }
@@ -276,7 +276,7 @@ private:
     int size;
 
     int hash(const KeyType& key) const {
-        // Ê¹ÓÃ¼òµ¥µÄÈ¡Ä£ÔËËã×÷Îª¹şÏ£º¯Êı
+        // ä½¿ç”¨ç®€å•çš„å–æ¨¡è¿ç®—ä½œä¸ºå“ˆå¸Œå‡½æ•°
         return static_cast<int>(key) % capacity;
     }
 
@@ -285,7 +285,7 @@ private:
     }
 
     void rehash() {
-        // À©´óÈİÁ¿Îªµ±Ç°µÄÁ½±¶
+        // æ‰©å¤§å®¹é‡ä¸ºå½“å‰çš„ä¸¤å€
         capacity *= 2;
         size = 0;
         std::vector<Node> newData(capacity);

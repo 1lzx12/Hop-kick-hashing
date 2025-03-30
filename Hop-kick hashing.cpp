@@ -1,4 +1,4 @@
-#include "新哈希.h"
+#include "Hop_kick_hashing.h"
 #include"PacketReader.h"
 #include"HSNPacketReader.h"
 #include"HashFunctions.h"

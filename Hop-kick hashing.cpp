@@ -1,4 +1,4 @@
-#include "ĞÂ¹şÏ£.h"
+#include "æ–°å“ˆå¸Œ.h"
 #include"PacketReader.h"
 #include"HSNPacketReader.h"
 #include"HashFunctions.h"
@@ -43,12 +43,12 @@ void LR::insert(int id)
 	insertRecord(id);
 }
 
-//»ñÈ¡´æ´¢µÄÏîÄ¿ĞÅÏ¢£¬ÀıÈçÊıÁ¿
+//è·å–å­˜å‚¨çš„é¡¹ç›®ä¿¡æ¯ï¼Œä¾‹å¦‚æ•°é‡
 ULONG LR::getFlowNum(int id)
 {
 	ULONG index[3];
 	getPositionRecord(id, index);
-	//ÏîÄ¿ÊÇ·ñÒÑ¾­±»´æ´¢
+	//é¡¹ç›®æ˜¯å¦å·²ç»è¢«å­˜å‚¨
 	for (ULONG i = 0; i < 3; i++) {
 		for (ULONG j = 0; j < COL; j++) {
 			find_count++;
@@ -63,7 +63,7 @@ int LR::getFlowFlag(int id)
 {
 	ULONG index[3];
 	getPositionRecord(id, index);
-	//ÏîÄ¿ÊÇ·ñÒÑ¾­±»´æ´¢
+	//é¡¹ç›®æ˜¯å¦å·²ç»è¢«å­˜å‚¨
 	for (ULONG i = 0; i < 3; i++) {
 		for (ULONG j = 0; j < COL; j++) {
 			if (entryTable[index[i]][j].id == id) {
@@ -105,7 +105,7 @@ double LR::getMemory_utilizationrate()
 	}
 	return items;
 }
-//ÓÃĞÂ¹şÏ£¼ÆËã´æ´¢Î»ÖÃ,ÓÃindex´æ´¢Èı¸öºòÑ¡Í°µÄÎ»ÖÃ
+//ç”¨æ–°å“ˆå¸Œè®¡ç®—å­˜å‚¨ä½ç½®,ç”¨indexå­˜å‚¨ä¸‰ä¸ªå€™é€‰æ¡¶çš„ä½ç½®
 void LR::getPositionRecord(int id, ULONG* index)
 {
 	index[0] = id % ROW;
@@ -132,10 +132,10 @@ bool LR::insertRecord(int id)
 {
 	ULONG index[3];
 	ULONG min = ULONG_MAX, row = 0, col = 0;
-	int flag;		//´æ´¢¹şÏ£Æ«ÒÆÁ¿
+	int flag;		//å­˜å‚¨å“ˆå¸Œåç§»é‡
 	getPositionRecord(id, index);
 
-	//ÏîÄ¿ÊÇ·ñÒÑ¾­±»´æ´¢,ÓĞ¿ÕÎ»Ôò´æ´¢
+	//é¡¹ç›®æ˜¯å¦å·²ç»è¢«å­˜å‚¨,æœ‰ç©ºä½åˆ™å­˜å‚¨
 	for (ULONG i = 0; i < 3; i++) {
 		for (ULONG j = 0; j < COL; j++) {
 			visit_count++;
@@ -171,18 +171,18 @@ bool LR::insertRecord(int id)
 	return true;
 }*/
 
-//fid:ÏîÄ¿id£¬index£ºÄ¿±ê´æ´¢Î»ÖÃ£¬direction£ºÌß·½Ïò£¬count£ºÏîÄ¿ĞÅÏ¢£¨ÊıÁ¿£©£¬flag£ºÆ«ÒÆÁ¿
-bool LR::Kick_Operation(int id, ULONG index, int direction, ULONG count, int flag)         //»ù´¡°æ±¾µÄÌß²Ù×÷
+//fid:é¡¹ç›®idï¼Œindexï¼šç›®æ ‡å­˜å‚¨ä½ç½®ï¼Œdirectionï¼šè¸¢æ–¹å‘ï¼Œcountï¼šé¡¹ç›®ä¿¡æ¯ï¼ˆæ•°é‡ï¼‰ï¼Œflagï¼šåç§»é‡
+bool LR::Kick_Operation(int id, ULONG index, int direction, ULONG count, int flag)         //åŸºç¡€ç‰ˆæœ¬çš„è¸¢æ“ä½œ
 {
 	kick++;
 	kick_count++;
 	ULONG row = 0, col = 0, min = ULONG_MAX, i = 0;
-	//replace_ÓÃÓÚÔİ´æ´ıÌŞ³öµÄÏîÄ¿
+	//replace_ç”¨äºæš‚å­˜å¾…å‰”å‡ºçš„é¡¹ç›®
 	int replace_id;
 	ULONG replace_count = 0;
 	int replace_flag = 0;
 	int replace_direction = direction;
-	//¸ù¾İdirectionÕÒ³öÄ¿±êÂß¼­ÏàÁÚÍ°
+	//æ ¹æ®directionæ‰¾å‡ºç›®æ ‡é€»è¾‘ç›¸é‚»æ¡¶
 	if (direction == 1)
 	{
 		if (index == 0)
@@ -197,7 +197,7 @@ bool LR::Kick_Operation(int id, ULONG index, int direction, ULONG count, int fla
 		else
 			row = index - direction;
 	}
-	//²éÕÒÊÇ·ñ´æÔÚ¿ÕÎ»£¬ÓĞ¿ÕÎ»Ö±½Ó²åÈë 
+	//æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨ç©ºä½ï¼Œæœ‰ç©ºä½ç›´æ¥æ’å…¥ 
 	for (i = 0; i < COL; i++) {
 		visit_count++;
 		if (entryTable[row][i].count == 0) {
@@ -208,8 +208,8 @@ bool LR::Kick_Operation(int id, ULONG index, int direction, ULONG count, int fla
 			return true;
 		}
 	}
-	//²»´æÔÚ¿ÕÎ»£¬Ñ¡ÔñÒ»ÌõÆ«ÒÆÁ¿Îª0µÄÏîÄ¿Ìß×ß
-	if (kick <= kick_t) {                //Ìß²Ù×÷´ÎÊıÃ»µ½´ïãĞÖµ£¬·´¸´Ö´ĞĞÖ±µ½³öÏÖ¿ÕÎ»
+	//ä¸å­˜åœ¨ç©ºä½ï¼Œé€‰æ‹©ä¸€æ¡åç§»é‡ä¸º0çš„é¡¹ç›®è¸¢èµ°
+	if (kick <= kick_t) {                //è¸¢æ“ä½œæ¬¡æ•°æ²¡åˆ°è¾¾é˜ˆå€¼ï¼Œåå¤æ‰§è¡Œç›´åˆ°å‡ºç°ç©ºä½
 		for (ULONG i = 0; i < COL; i++)  {
 			visit_count++;
 			if (entryTable[row][i].flag == 0) {
@@ -222,28 +222,28 @@ bool LR::Kick_Operation(int id, ULONG index, int direction, ULONG count, int fla
 				return Kick_Operation(replace_id, row, replace_direction, replace_count, replace_flag);
 			}
 		}
-		//Ìß²Ù×÷´ÎÊıÃ»µ½´ïãĞÖµ£¬µ«ÒÑ²»´æÔÚÂú×ãÌßÌõ¼ş£¨Ã»ÓĞÆ«ÒÆÁ¿Îª0µÄÏîÄ¿£©µÄÏîÄ¿£¬Ôò·ÅÆúÌß²Ù×÷£¬¶ªÆú¸ÃÏîÄ¿£¬²åÈëÊ§°Ü
+		//è¸¢æ“ä½œæ¬¡æ•°æ²¡åˆ°è¾¾é˜ˆå€¼ï¼Œä½†å·²ä¸å­˜åœ¨æ»¡è¶³è¸¢æ¡ä»¶ï¼ˆæ²¡æœ‰åç§»é‡ä¸º0çš„é¡¹ç›®ï¼‰çš„é¡¹ç›®ï¼Œåˆ™æ”¾å¼ƒè¸¢æ“ä½œï¼Œä¸¢å¼ƒè¯¥é¡¹ç›®ï¼Œæ’å…¥å¤±è´¥
 		kick = 0;
 		return false;
 	}
-	//Ìß²Ù×÷´ÎÊıµ½´ïãĞÖµ£¬²åÈëÊ§°Ü
+	//è¸¢æ“ä½œæ¬¡æ•°åˆ°è¾¾é˜ˆå€¼ï¼Œæ’å…¥å¤±è´¥
 	else {
 		kick = 0;
 		return false;
 	}
 }
-//Õë¶ÔÌß²Ù×÷µÄµÚÒ»¸öÓÅ»¯£ºÔÚÉÏÏàÁÚÍ°ÖĞ¿ÉÒÔÓÅÏÈÌßÆ«ÒÆÁ¿Îª-1µÄÏîÄ¿£¬ÔÚÏÂÏàÁÚÍ°ÖĞÓÅÏÈÌßÆ«ÒÆÁ¿Îª+1µÄÏîÄ¿
+//é’ˆå¯¹è¸¢æ“ä½œçš„ç¬¬ä¸€ä¸ªä¼˜åŒ–ï¼šåœ¨ä¸Šç›¸é‚»æ¡¶ä¸­å¯ä»¥ä¼˜å…ˆè¸¢åç§»é‡ä¸º-1çš„é¡¹ç›®ï¼Œåœ¨ä¸‹ç›¸é‚»æ¡¶ä¸­ä¼˜å…ˆè¸¢åç§»é‡ä¸º+1çš„é¡¹ç›®
 bool LR::Kick_Operation_opt1(int id, ULONG index, int direction, ULONG count, int flag)
 {
 	kick++;
 	kick_count++;
 	ULONG row = 0, col = 0, min = ULONG_MAX, i = 0;
-	//replace_ÓÃÓÚÔİ´æ´ıÌŞ³öµÄÏîÄ¿
+	//replace_ç”¨äºæš‚å­˜å¾…å‰”å‡ºçš„é¡¹ç›®
 	int replace_id;
 	ULONG replace_count = 0;
 	int replace_flag = 0;
 	int replace_direction = direction;
-	//¸ù¾İdirectionÕÒ³öÄ¿±êÂß¼­ÏàÁÚÍ°
+	//æ ¹æ®directionæ‰¾å‡ºç›®æ ‡é€»è¾‘ç›¸é‚»æ¡¶
 	if (direction == 1)
 	{
 		if (index == 0)
@@ -258,7 +258,7 @@ bool LR::Kick_Operation_opt1(int id, ULONG index, int direction, ULONG count, in
 		else
 			row = index - direction;
 	}
-	//²éÕÒÊÇ·ñ´æÔÚ¿ÕÎ»£¬ÓĞ¿ÕÎ»Ö±½Ó²åÈë 
+	//æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨ç©ºä½ï¼Œæœ‰ç©ºä½ç›´æ¥æ’å…¥ 
 	for (i = 0; i < COL; i++) {
 		visit_count++;
 		if (entryTable[row][i].count == 0) {
@@ -269,8 +269,8 @@ bool LR::Kick_Operation_opt1(int id, ULONG index, int direction, ULONG count, in
 			return true;
 		}
 	}
-	//Ñ¡ÔñÒ»ÌõÆ«ÒÆÁ¿²»Îª0µÄÏîÄ¿Ìß»ØÆäÓ³ÉäÎ»ÖÃ
-	if (kick <= kick_t) {                     //Ìß²Ù×÷´ÎÊıÃ»µ½´ïãĞÖµ£¬·´¸´Ö´ĞĞÖ±µ½³öÏÖ¿ÕÎ»
+	//é€‰æ‹©ä¸€æ¡åç§»é‡ä¸ä¸º0çš„é¡¹ç›®è¸¢å›å…¶æ˜ å°„ä½ç½®
+	if (kick <= kick_t) {                     //è¸¢æ“ä½œæ¬¡æ•°æ²¡åˆ°è¾¾é˜ˆå€¼ï¼Œåå¤æ‰§è¡Œç›´åˆ°å‡ºç°ç©ºä½
 		if (direction == -1) {
 			for (ULONG i = 0; i < COL; i++) {
 				visit_count++;
@@ -284,7 +284,7 @@ bool LR::Kick_Operation_opt1(int id, ULONG index, int direction, ULONG count, in
 					return Kick_Operation_opt1(replace_id, row, replace_direction, replace_count, replace_flag);
 				}
 			}
-			//Ìß²Ù×÷´ÎÊıÃ»µ½´ïãĞÖµ£¬µ«ÔÚµÚÒ»¸öÓÅ»¯Ìõ¼şÏÂÒÑ²»´æÔÚÂú×ãÌßÌõ¼ş£¨Ã»ÓĞÆ«ÒÆÁ¿Îª0µÄÏîÄ¿£©µÄÏîÄ¿£¬×ª¶ø²ÉÓÃ»ù´¡°æ±¾µÄÌß²Ù×÷
+			//è¸¢æ“ä½œæ¬¡æ•°æ²¡åˆ°è¾¾é˜ˆå€¼ï¼Œä½†åœ¨ç¬¬ä¸€ä¸ªä¼˜åŒ–æ¡ä»¶ä¸‹å·²ä¸å­˜åœ¨æ»¡è¶³è¸¢æ¡ä»¶ï¼ˆæ²¡æœ‰åç§»é‡ä¸º0çš„é¡¹ç›®ï¼‰çš„é¡¹ç›®ï¼Œè½¬è€Œé‡‡ç”¨åŸºç¡€ç‰ˆæœ¬çš„è¸¢æ“ä½œ
 			return Kick_Operation(id, index, direction, count, flag);
 		}
 		if (direction == 1) {
@@ -303,24 +303,24 @@ bool LR::Kick_Operation_opt1(int id, ULONG index, int direction, ULONG count, in
 			return Kick_Operation(id, index, direction, count, flag);
 		}
 	}
-	//Ìß²Ù×÷´ÎÊıµ½´ïãĞÖµ£¬²åÈëÊ§°Ü
+	//è¸¢æ“ä½œæ¬¡æ•°åˆ°è¾¾é˜ˆå€¼ï¼Œæ’å…¥å¤±è´¥
 	else {
 		kick = 0;
 		return false;
 	}
 }
-/*Õë¶ÔÌß²Ù×÷µÄµÚ2¸öÓÅ»¯£º²ÉÓÃÈ¨ÖØÓÅÏÈ²ßÂÔ£¬ÔÚÌß²Ù×÷ÖĞ½«ÎÒÃÇÈÏÎªµÄ·ÃÎÊÁ¿½Ï´ó»òÎ´À´²åÈë´ÎÊı¶àµÄÏîÄ¿´æ´¢ÔÚÆäÓ³ÉäÍ°ÖĞ£¬
-ÒÔ¼õÉÙ²åÈëºÍ·ÃÎÊµÄÊ±¼ä¸´ÔÓ¶È¡£ÉõÖÁ£¬¶ÔÓÚÒ»Ğ©²»Ì«ÖØÒªµÄÏîÄ¿£¬ÎÒÃÇ¿ÉÒÔÔÚµÚÒ»´ÎÌß²Ù×÷Ê±¾Í½«Æä¶ªÆú£¬¼õÉÙ¶àÓàµÄÌß²Ù×÷¡£*/
+/*é’ˆå¯¹è¸¢æ“ä½œçš„ç¬¬2ä¸ªä¼˜åŒ–ï¼šé‡‡ç”¨æƒé‡ä¼˜å…ˆç­–ç•¥ï¼Œåœ¨è¸¢æ“ä½œä¸­å°†æˆ‘ä»¬è®¤ä¸ºçš„è®¿é—®é‡è¾ƒå¤§æˆ–æœªæ¥æ’å…¥æ¬¡æ•°å¤šçš„é¡¹ç›®å­˜å‚¨åœ¨å…¶æ˜ å°„æ¡¶ä¸­ï¼Œ
+ä»¥å‡å°‘æ’å…¥å’Œè®¿é—®çš„æ—¶é—´å¤æ‚åº¦ã€‚ç”šè‡³ï¼Œå¯¹äºä¸€äº›ä¸å¤ªé‡è¦çš„é¡¹ç›®ï¼Œæˆ‘ä»¬å¯ä»¥åœ¨ç¬¬ä¸€æ¬¡è¸¢æ“ä½œæ—¶å°±å°†å…¶ä¸¢å¼ƒï¼Œå‡å°‘å¤šä½™çš„è¸¢æ“ä½œã€‚*/
 bool LR::Kick_Operation_opt2(int id, ULONG index, int direction, ULONG count, int flag)
 {
 	kick++;
 	ULONG row = 0, col = 0, min = ULONG_MAX, i = 0;
-	//replace_ÓÃÓÚÔİ´æ´ıÌŞ³öµÄÏîÄ¿
+	//replace_ç”¨äºæš‚å­˜å¾…å‰”å‡ºçš„é¡¹ç›®
 	int replace_id;
 	ULONG replace_count = 0;
 	int replace_flag = 0;
 	int replace_direction = direction;
-	//¸ù¾İdirectionÕÒ³öÄ¿±êÂß¼­ÏàÁÚÍ°
+	//æ ¹æ®directionæ‰¾å‡ºç›®æ ‡é€»è¾‘ç›¸é‚»æ¡¶
 	if (direction == 1)
 	{
 		if (index == 0)
@@ -344,18 +344,18 @@ bool LR::Kick_Operation_opt2(int id, ULONG index, int direction, ULONG count, in
 			return true;
 		}
 	}
-	//²ÉÓÃÈ¨ÖØÓÅÏÈ²ßÂÔ½øĞĞÌß²Ù×÷
-	if (kick <= kick_t) {                     //Ìß²Ù×÷´ÎÊıÃ»µ½´ïãĞÖµ£¬·´¸´Ö´ĞĞÖ±µ½³öÏÖ¿ÕÎ»
-		if (direction == -1) {                //ÔÚÏÂÏàÁÚÍ°ÖĞ
+	//é‡‡ç”¨æƒé‡ä¼˜å…ˆç­–ç•¥è¿›è¡Œè¸¢æ“ä½œ
+	if (kick <= kick_t) {                     //è¸¢æ“ä½œæ¬¡æ•°æ²¡åˆ°è¾¾é˜ˆå€¼ï¼Œåå¤æ‰§è¡Œç›´åˆ°å‡ºç°ç©ºä½
+		if (direction == -1) {                //åœ¨ä¸‹ç›¸é‚»æ¡¶ä¸­
 			int count = 0, pos = -1;
-			for (ULONG i = 0; i < COL; i++)   //²éÕÒÈ¨ÖØ×î´óµÄÁ÷ÇÒÆ«ÒÆÁ¿Îª1µÄÏîÄ¿
+			for (ULONG i = 0; i < COL; i++)   //æŸ¥æ‰¾æƒé‡æœ€å¤§çš„æµä¸”åç§»é‡ä¸º1çš„é¡¹ç›®
 			{
 				if ((entryTable[row][i].count > count) && (entryTable[row][i].flag == 1)) {
 					count = entryTable[row][i].count;
 					pos = i;
 				}
 			}
-			if (pos != -1) {                  //ÕÒµ½ÁË·ûºÏÌßÌõ¼şµÄÏîÄ¿,¼ÌĞøÖ´ĞĞÓÅ»¯2µÄÌß²Ù×÷
+			if (pos != -1) {                  //æ‰¾åˆ°äº†ç¬¦åˆè¸¢æ¡ä»¶çš„é¡¹ç›®,ç»§ç»­æ‰§è¡Œä¼˜åŒ–2çš„è¸¢æ“ä½œ
 				replace_id = entryTable[row][i].id;
 				replace_count = entryTable[row][i].count;
 				replace_flag = entryTable[row][i].flag;
@@ -364,11 +364,11 @@ bool LR::Kick_Operation_opt2(int id, ULONG index, int direction, ULONG count, in
 				entryTable[row][i].flag = flag + direction;
 				return Kick_Operation_opt2(replace_id, row, replace_direction, replace_count, replace_flag);
 			}
-			else {                             //Ã»ÕÒµ½·ûºÏÌßÌõ¼şµÄÏîÄ¿,×ª¶øÖ´ĞĞÓÅ»¯1µÄÌß²Ù×÷
+			else {                             //æ²¡æ‰¾åˆ°ç¬¦åˆè¸¢æ¡ä»¶çš„é¡¹ç›®,è½¬è€Œæ‰§è¡Œä¼˜åŒ–1çš„è¸¢æ“ä½œ
 				return Kick_Operation_opt1(id, index, direction, count, flag);
 			}
 		}
-		else if (direction == 1) {             //ÔÚÉÏÏàÁÚÍ°ÖĞ
+		else if (direction == 1) {             //åœ¨ä¸Šç›¸é‚»æ¡¶ä¸­
 			int count = 0, pos = 0;
 			for (ULONG i = 0; i < COL; i++)  
 			{
@@ -391,7 +391,7 @@ bool LR::Kick_Operation_opt2(int id, ULONG index, int direction, ULONG count, in
 			};
 		}
 	}
-	//Ìß²Ù×÷´ÎÊıµ½´ïãĞÖµ£¬²åÈëÊ§°Ü
+	//è¸¢æ“ä½œæ¬¡æ•°åˆ°è¾¾é˜ˆå€¼ï¼Œæ’å…¥å¤±è´¥
 	else {
 		kick = 0;
 		return false;
@@ -405,7 +405,7 @@ void ShowCuckoo_row(int row[], int conflict[],  int insert_visit[], int find_vis
 	int num = 0;
 	while (reader.readPacket(pkt))
 	{
-		//std::cout << "Ê±¼ä´Á£º " << pkt.time << std::endl;
+		//std::cout << "æ—¶é—´æˆ³ï¼š " << pkt.time << std::endl;
 		flows[num].proto = pkt.proto;
 		flows[num].src = pkt.src;
 		flows[num].dst = pkt.dst;
@@ -439,7 +439,7 @@ void ShowCuckoo_row(int row[], int conflict[],  int insert_visit[], int find_vis
 		for (const auto& key : sfind_keys) {
 			hk.getFlowNum(key);
 		}
-		cout << "µ¥Ôª¸ñÊıÁ¿£º" << i*2 <<"¹şÏ£Í°ÊıÁ¿£º"<< j << endl;
+		cout << "å•å…ƒæ ¼æ•°é‡ï¼š" << i*2 <<"å“ˆå¸Œæ¡¶æ•°é‡ï¼š"<< j << endl;
 		conflict[i] = hk.getConflict();
 		insert_visit[i] = hk.getVisit_count();
 		find_visit[i] = hk.getFind_count();
@@ -455,7 +455,7 @@ void ShowCuckoo_kick(int kick[], int conflict[], int insert_visit[], int find_vi
 	int num = 0;
 	while (reader.readPacket(pkt))
 	{
-		//std::cout << "Ê±¼ä´Á£º " << pkt.time << std::endl;
+		//std::cout << "æ—¶é—´æˆ³ï¼š " << pkt.time << std::endl;
 		flows[num].proto = pkt.proto;
 		flows[num].src = pkt.src;
 		flows[num].dst = pkt.dst;
@@ -488,7 +488,7 @@ void ShowCuckoo_kick(int kick[], int conflict[], int insert_visit[], int find_vi
 		for (const auto& key : sfind_keys) {
 			hk.getFlowNum(key);
 		}
-		cout << "Ìß²Ù×÷ãĞÖµ£º" << i << endl;
+		cout << "è¸¢æ“ä½œé˜ˆå€¼ï¼š" << i << endl;
 		conflict[i] = hk.getConflict();
 		insert_visit[i] = hk.getVisit_count();
 		find_visit[i] = hk.getFind_count();
@@ -500,14 +500,14 @@ void ShowCuckoo_kick(int kick[], int conflict[], int insert_visit[], int find_vi
 int main() {
 
 	/*LR hk(0, 1667, 6, 0, 6);
-	// Éú³ÉËæ»úÏîÄ¿¼¯ºÏ
-	// ÉèÖÃËæ»úÖÖ×Ó  
-	// ²âÊÔ ĞÂ ¹şÏ£µÄĞÔÄÜ
+	// ç”Ÿæˆéšæœºé¡¹ç›®é›†åˆ
+	// è®¾ç½®éšæœºç§å­  
+	// æµ‹è¯• æ–° å“ˆå¸Œçš„æ€§èƒ½
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dis(1, 100000);
 
-	// Éú³ÉËæ»ú¼ü¼¯ºÏ
+	// ç”Ÿæˆéšæœºé”®é›†åˆ
 	std::vector<int> keys;
 	for (int i = 0; i < 10000; ++i) {
 		keys.push_back(dis(gen));
@@ -554,26 +554,26 @@ int main() {
 	//std::cout << "Cuckoo Hashing Time: " << hopkickinserttime.count() << " seconds" << std::endl;
 	//std::cout << "Cuckoo usfind Time: " << hopkick_usfindtime.count() << " seconds" << std::endl;
 	std::cout << "Cuckoo usfind Time: " << hopkick_usfindtime.count() << " seconds" << std::endl; */
-	int row[] = {2, 3, 4, 6, 8, 10, 13, 17, 22, 27}; // xÖáÊı¾İ
+	int row[] = {2, 3, 4, 6, 8, 10, 13, 17, 22, 27}; // xè½´æ•°æ®
 	int kick[] = { 2, 3, 4, 6, 8, 10, 13, 17, 22, 27 };
-	int y1[10]; // µÚÒ»¸öÊı×éµÄÊı¾İ
-	int y2[10]; // µÚ¶ş¸öÊı×éµÄÊı¾İ
-	int y3[10]; // µÚÈı¸öÊı×éµÄÊı¾İ
-	int y4[10]; // µÚËÄ¸öÊı×éµÄÊı¾İ
-	int y5[10]; // µÚÒ»¸öÊı×éµÄÊı¾İ
-	int y6[10]; // µÚ¶ş¸öÊı×éµÄÊı¾İ
-	int y7[10]; // µÚÈı¸öÊı×éµÄÊı¾İ
-	int y8[10]; // µÚËÄ¸öÊı×éµÄÊı¾İ
-	int y9[10]; // µÚËÄ¸öÊı×éµÄÊı¾İ
-	int y10[10]; // µÚËÄ¸öÊı×éµÄÊı¾İ
+	int y1[10]; // ç¬¬ä¸€ä¸ªæ•°ç»„çš„æ•°æ®
+	int y2[10]; // ç¬¬äºŒä¸ªæ•°ç»„çš„æ•°æ®
+	int y3[10]; // ç¬¬ä¸‰ä¸ªæ•°ç»„çš„æ•°æ®
+	int y4[10]; // ç¬¬å››ä¸ªæ•°ç»„çš„æ•°æ®
+	int y5[10]; // ç¬¬ä¸€ä¸ªæ•°ç»„çš„æ•°æ®
+	int y6[10]; // ç¬¬äºŒä¸ªæ•°ç»„çš„æ•°æ®
+	int y7[10]; // ç¬¬ä¸‰ä¸ªæ•°ç»„çš„æ•°æ®
+	int y8[10]; // ç¬¬å››ä¸ªæ•°ç»„çš„æ•°æ®
+	int y9[10]; // ç¬¬å››ä¸ªæ•°ç»„çš„æ•°æ®
+	int y10[10]; // ç¬¬å››ä¸ªæ•°ç»„çš„æ•°æ®
 	ShowCuckoo_row(row, y1, y2, y3);
 	ShowCuckoo_kick(kick, y4, y5, y6);
-	std::ofstream outputFile("hopkick_tiaocan_flow.csv"); // ´´½¨Ò»¸öÃûÎª"data.csv"µÄÎÄ¼ş
+	std::ofstream outputFile("hopkick_tiaocan_flow.csv"); // åˆ›å»ºä¸€ä¸ªåä¸º"data.csv"çš„æ–‡ä»¶
 
-    //½«Êı¾İĞ´ÈëCSVÎÄ¼ş
+    //å°†æ•°æ®å†™å…¥CSVæ–‡ä»¶
 	for (size_t i = 0; i < 10; ++i) {
 		outputFile << row[i] << "," << y1[i] << "," << y2[i] << "," << y3[i] << "," << y4[i] << "," << y5[i] << "," << y6[i] << "," ;
 	}
-	outputFile.close(); // ¹Ø±ÕÎÄ¼ş
+	outputFile.close(); // å…³é—­æ–‡ä»¶
 	return 0;
 }
